@@ -1,0 +1,21 @@
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+class Trainer:
+    def __init__(self, data):
+        self.data = data
+        self.model = None
+        self.X_train, self.X_test, self.y_train, self.y_test = None, None, None, None
+
+    def split_data(self, test_size=0.2, random_state=42):
+        X = self.data.drop("target", axis=1)
+        y = self.data["target"]
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            X, y, test_size=test_size, random_state=random_state
+        )
+        return self.X_train, self.X_test, self.y_train, self.y_test
+
+    def train(self):
+        self.model = LogisticRegression(max_iter=500)
+        self.model.fit(self.X_train, self.y_train)
+        return self.model
